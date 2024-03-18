@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import router from "./routes";
 import { responseHandler } from "./helpers/responseHandler";
 
 dotenv.config();
@@ -17,12 +18,18 @@ if(process.env.NODE_ENV !== "production"){
 
 app.use(helmet());
 
+app.use('/api/v1/', router);
+
 app.get("/", (req, res) => {
-    // res.status(200).json("Welcome");
     return responseHandler(res, 200, true, "Welcome to Nest Api");
-})
+});
+
+app.use("*", (req, res) => {
+    return responseHandler(res, 500, false, "Invalid Route");
+});
+
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
-    console.log(`App is running on port ${ port }`)
+    console.log(`App is running on port ${ port }`);
 })
