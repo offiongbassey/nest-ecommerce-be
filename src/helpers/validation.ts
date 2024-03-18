@@ -91,6 +91,13 @@ export const formatPhoneNumber = async (phone: string) => {
 
 export const vendorSignUpValidation = async (body: { email: string, phone: string}) => {
     await existingEmail(body.email, 'Vendor');
+    await acceptedPhoneNumber(body.phone);
     await existingPhone(body.phone, 'Vendor');
+}
+
+export const customerSignupValidation = async (body: {email: string, phone: string}) => {
+    await existingEmail(body.email, 'Customer');
+    await acceptedPhoneNumber(body.phone);
+    await existingPhone(body.phone, 'Customer');
 }
 
