@@ -286,3 +286,117 @@ export const change_store_status = [
     body()
         .custom(body => checkAllowedFields(body, ["status"]))
 ]
+
+export const create_category_validator = [
+    body("name")
+        .exists()
+        .withMessage("Category Name is required")
+        .notEmpty()
+        .withMessage("Category Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ["name"]))
+]
+
+export const update_category_validator = [
+    param("category_id")
+        .exists()
+        .withMessage("Category ID is required")
+        .notEmpty()
+        .withMessage("Category ID cannot be empty")
+        .isInt()
+        .withMessage("Category ID must be number"),
+    body("name")
+        .exists()
+        .withMessage("Category Name is required")
+        .notEmpty()
+        .withMessage("Category Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body("slug")
+        .exists()
+        .withMessage("Slug URL is required")
+        .notEmpty()
+        .withMessage("Slug URL cannot be empty"),
+    body()
+        .custom(body => checkAllowedFields(body, ["name", "slug"]))
+]
+
+export const delete_category_validator = [
+    param("category_id")
+        .exists()
+        .withMessage("Category ID is required")
+        .notEmpty()
+        .withMessage("Category ID cannot be empty")
+        .isInt()
+        .withMessage("Category ID must be number")
+]
+
+export const create_sub_category_validator = [
+    body("category_id")
+        .exists()
+        .withMessage("Sub Category ID is required")
+        .notEmpty()
+        .withMessage("Sub Category ID cannot be empty")
+        .isInt()
+        .withMessage("Sub Category ID must be number"),
+    body("name")
+        .exists()
+        .withMessage("Sub Category Name is required")
+        .notEmpty()
+        .withMessage("Sub Category Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ['category_id', 'name']))
+]
+
+export const get_sub_categories_validator = [
+    param("category_id")
+        .exists()
+        .withMessage("Category ID is required")
+        .notEmpty()
+        .withMessage("Category ID cannot be empty")
+        .isInt()
+        .withMessage("Category ID must be number")
+]
+
+export const update_sub_category_validator = [
+    param("sub_category_id")
+        .exists()
+        .withMessage("Sub Category ID is required")
+        .notEmpty()
+        .withMessage("Sub Category ID cannot be empty")
+        .isInt()
+        .withMessage("Sub Category ID must be number"),
+    body("category_id")
+        .exists()
+        .withMessage("Category ID is required")
+        .notEmpty()
+        .withMessage("Category ID cannot be empty")
+        .isInt()
+        .withMessage("Category ID must be number"),
+    body("name")
+        .exists()
+        .withMessage("Sub Category Name is required")
+        .notEmpty()
+        .withMessage("Sub Category Name cannot be empty"),
+    body("slug")
+        .exists()
+        .withMessage("Slug URL is required")
+        .notEmpty()
+        .withMessage("Slug URL cannot be empty"),
+    body()
+        .custom(body => checkAllowedFields(body, ["category_id", "name", "slug"]))
+]
+
+export const delete_sub_category_validator = [
+    param("sub_category_id")
+        .exists()
+        .withMessage("Sub Category ID is required")
+        .notEmpty()
+        .withMessage("Sub Category ID cannot be empty")
+        .isInt()
+        .withMessage("Sub Category ID must be number")
+]
