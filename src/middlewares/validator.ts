@@ -1,4 +1,4 @@
-import { body, header } from "express-validator";
+import { body, header, param } from "express-validator";
 import { checkAllowedFields, customerSignupValidation, formatPhoneNumber, titleCase, vendorSignUpValidation } from "../helpers/validation";
 
 export const vendor_signup_validator = [
@@ -146,4 +146,143 @@ export const customer_logout_validator = [
         .notEmpty()
         .withMessage("Header cannot be empty")
         .trim()
+]
+
+export const create_store_validator = [
+    body("name")
+        .exists()
+        .withMessage("Store Name is required")
+        .notEmpty()
+        .withMessage("Store Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body("desc")
+        .exists()
+        .withMessage("Description is required")
+        .notEmpty()
+        .withMessage("Description cannot be empty"),
+    body("address")
+        .exists()
+        .withMessage("Address is required")
+        .notEmpty()
+        .withMessage("Address cannot be empty"),
+    body("phone")
+        .exists()
+        .withMessage("Phone Number is required")
+        .notEmpty()
+        .withMessage("Phone Number cannot be empty"),
+    body("alt_phone")
+        .optional(),
+    body("email")
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .isEmail()
+        .withMessage("Invalid Email")
+        .normalizeEmail(),
+    body("state")
+        .exists()
+        .withMessage("State is required")
+        .notEmpty()
+        .withMessage("State cannot be empty"),
+    body("city")
+        .exists()
+        .withMessage("City is required")
+        .notEmpty()
+        .withMessage("City cannot be empty"),
+    body("logo")
+        .optional(),
+    body()
+        .custom(body => checkAllowedFields(body, ["name", "desc", "address", "phone", "alt_phone", "email", "state", "city", "logo"]))
+]
+
+export const delete_store_validator = [
+    param("store_id")
+        .exists()
+        .withMessage("Store ID is required")
+        .notEmpty()
+        .withMessage("Store ID cannot be empty")
+        .isInt()
+        .withMessage("Store ID must be number")
+]
+
+export const update_store_validator = [
+    param("store_id")
+        .exists()
+        .withMessage("Store ID is required")
+        .notEmpty()
+        .withMessage("Store ID cannot be empty")
+        .isInt()
+        .withMessage("Store ID must be number"),
+    body("name")
+        .exists()
+        .withMessage("Store Name is required")
+        .notEmpty()
+        .withMessage("Store Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body("desc")
+        .exists()
+        .withMessage("Description is required")
+        .notEmpty()
+        .withMessage("Description cannot be empty"),
+    body("slug")
+        .exists()
+        .withMessage("Slug URL is required")
+        .notEmpty()
+        .withMessage("Slug URL cannot be empty"),
+    body("address")
+        .exists()
+        .withMessage("Address is required")
+        .notEmpty()
+        .withMessage("Address cannot be empty"),
+    body("phone")
+        .exists()
+        .withMessage("Phone Number is required")
+        .notEmpty()
+        .withMessage("Phone Number cannot be empty"),
+    body("alt_phone")
+        .optional(),
+    body("email")
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .isEmail()
+        .withMessage("Invalid Email")
+        .normalizeEmail(),
+    body("state")
+        .exists()
+        .withMessage("State is required")
+        .notEmpty()
+        .withMessage("State cannot be empty"),
+    body("city")
+        .exists()
+        .withMessage("City is required")
+        .notEmpty()
+        .withMessage("City cannot be empty"),
+    body("logo")
+        .optional(),
+    body()
+        .custom(body => checkAllowedFields(body, ["name", "desc", "slug", "address", "phone", "alt_phone", "email", "state", "city", "logo"]))
+]
+
+export const change_store_status = [
+    param("store_id")
+        .exists()
+        .withMessage("Store ID is required")
+        .notEmpty()
+        .withMessage("Store ID cannot be empty")
+        .isInt()
+        .withMessage("Store ID must be number"),
+    body("status")
+        .exists()
+        .withMessage("Status is required")
+        .notEmpty()
+        .withMessage("Status cannot be empty")
+        .isIn(["active", "blocked"])
+        .withMessage("Status must be active or blocked"),
+    body()
+        .custom(body => checkAllowedFields(body, ["status"]))
 ]

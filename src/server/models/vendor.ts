@@ -41,7 +41,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
     address!: string;
     dob!: string;
     static associate(models: any) {
-      // define association here
+     Vendor.hasMany(models.Store, {
+      foreignKey: 'vendor_id',
+      as: 'vendor'
+     })
     }
   }
   Vendor.init({
