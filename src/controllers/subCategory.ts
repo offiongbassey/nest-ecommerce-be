@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { errorHandler } from "../helpers/errorHandler";
 import { responseHandler } from "../helpers/responseHandler";
 import Model from "../server/models";
+import { urlGenerator } from "../utils/urlGenerator";
 const Op = Model.Sequelize.Op;
 
 export const createSubCategory = async (req: Request, res: Response) => {
@@ -10,7 +11,7 @@ export const createSubCategory = async (req: Request, res: Response) => {
         const sub_category = await Model.SubCategory.create({
             category_id,
             name,
-            slug: name.replace(/\s+/g, '-').replace(/:/g, "-").replace("/", "-").toLowerCase()
+            slug: urlGenerator(name)
         });
 
         return responseHandler(res, 201, true, "Sub Category Created Successfully", sub_category);
@@ -60,7 +61,7 @@ export const updateSubCategory = async (req: Request, res: Response) => {
         const updated_sub_category = await Model.SubCategory.update({
             category_id,
             name,
-            slug: sub_category.slug === slug ? slug : slug.replace(/\s+/g, '-').replace(/:/g, "-").replace("/", "-").toLowerCase()
+            slug: sub_category.slug === slug ? slug : urlGenerator(slug)
         }, {where : { id }, returning: true});
 
         return responseHandler(res, 200, true, "Sub Category Updated Successfully", updated_sub_category);

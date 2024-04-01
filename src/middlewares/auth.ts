@@ -5,7 +5,7 @@ import { jwtVerification } from "../helpers/jwtVerification";
 import { client } from "../server/config/redis";
 import Model from "../server/models";
 
-export const vendorAuth = async (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (userType: string) => async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = `${req.headers.token}`;
         if(!req.headers.token){
@@ -15,19 +15,32 @@ export const vendorAuth = async (req: Request, res: Response, next: NextFunction
         if(!verification.id){
             return responseHandler(res, 401, false, "User not logged In");
         }
-        const redis_token = await client.get(`Vendor_${verification.id.toString()}`);
+
+        const redis_token = await client.get(`${userType === "vendor" ? "Vendor" : "Customer"}_${verification.id.toString()}`);
         if(!redis_token){
             return responseHandler(res, 401, false, "User not logged In");
         }
-        const vendor = await Model.Vendor.findOne({ where: { id: verification.id }});
-        if(!vendor){
-            return responseHandler(res, 401, false, "Vendor not found");
+        if(userType === "vendor"){
+            const vendor = await Model.Vendor.findOne({ where: { id: verification.id }});
+            if(!vendor){
+                return responseHandler(res, 401, false, "Vendor not found");
+            }
+            req.vendor = vendor;
+        }else if(userType === "customer"){
+            const customer = await Model.Customer.findOne({ where: { id: verification.id }});
+            if(!customer){
+                return responseHandler(res, 401, false, "Account not found");
+            }
+            req.customer = customer;
         }
-        req.vendor = vendor;
         next();
+        
 
     } catch (error) {
         await errorHandler(error);
         return responseHandler(res, 500, false, "Something went wrong, try again later.");
     }
 }
+
+export const vendorAuth = authMiddleware("vendor");
+export const customerAuth = authMiddleware("customer");
