@@ -45,6 +45,10 @@ module.exports = (sequelize: any, DataTypes: any ) => {
       Store.belongsTo(models.Vendor, {
         foreignKey: 'vendor_id',
         as: 'vendor'
+      });
+      Store.hasMany(models.Product, {
+        foreignKey: "store_id",
+        as: "store"
       })
   }
   }

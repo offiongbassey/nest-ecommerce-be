@@ -1,4 +1,4 @@
-import { body, header, param } from "express-validator";
+import { body, header, param, query } from "express-validator";
 import { checkAllowedFields, customerSignupValidation, formatPhoneNumber, titleCase, vendorSignUpValidation } from "../helpers/validation";
 
 export const vendor_signup_validator = [
@@ -400,3 +400,314 @@ export const delete_sub_category_validator = [
         .isInt()
         .withMessage("Sub Category ID must be number")
 ]
+
+export const create_size_validator = [
+    body("size")
+        .exists()
+        .withMessage("Size is required")
+        .notEmpty()
+        .withMessage("Size cannot be empty")
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ["size"]))
+]
+
+export const update_size_validator = [
+    param("size_id")
+        .exists()
+        .withMessage("Size ID is required")
+        .notEmpty()
+        .withMessage("Size ID cannot be empty")
+        .isInt()
+        .withMessage("Size ID must be number"),
+    body("size")
+        .exists()
+        .withMessage("Size is required")
+        .notEmpty()
+        .withMessage("Size cannot be empty")
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ["size"]))
+]
+
+export const delete_size_validator = [
+    param("size_id")
+        .exists()
+        .withMessage("Size ID is required")
+        .notEmpty()
+        .withMessage("Size ID cannot be empty")
+        .isInt()
+        .withMessage("Size ID must be number")
+]
+
+export const create_color_validator = [
+    body("color")
+        .exists()
+        .withMessage("Color is required")
+        .notEmpty()
+        .withMessage("Color Cannot be empty")
+        .trim(),
+    body("code")
+        .exists()
+        .withMessage("Color Code is required")
+        .notEmpty()
+        .withMessage("Color Code cannot be empty")
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ["color", "code"]))
+]
+
+export const update_color_validator = [
+    param("color_id")
+        .exists()
+        .withMessage("Color ID is required")
+        .notEmpty()
+        .withMessage("Color ID cannot be empty")
+        .isInt()
+        .withMessage("Color ID must be number"),
+    body("color")
+        .exists()
+        .withMessage("Color is required")
+        .notEmpty()
+        .withMessage("Color cannot be empty")
+        .trim(),
+    body("code")
+        .exists()
+        .withMessage("Color Code is required")
+        .notEmpty()
+        .withMessage("Color Code cannot be empty")
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ["color", "code"]))
+]
+
+export const delete_color_validator = [
+    param("color_id")
+        .exists()
+        .withMessage("Color ID is required")
+        .notEmpty()
+        .withMessage("Color ID cannot be empty")
+        .isInt()
+        .withMessage("Color ID must be number")
+]
+
+export const create_product_validator = [
+    body("name")
+        .exists()
+        .withMessage("Product Name is required")
+        .notEmpty()
+        .withMessage("Product Name cannot be empty")
+        .customSanitizer(titleCase),
+    body("description")
+        .exists()
+        .withMessage("Description is required")
+        .notEmpty()
+        .withMessage("Description cannot be empty"),
+    body("regular_price")
+        .exists()
+        .withMessage("Regular Price is required")
+        .notEmpty()
+        .withMessage("Regular Price cannot be empty")
+        .isInt()
+        .withMessage("Regular Price must be number"),
+    body("promo_price")
+        .optional()
+        .isInt()
+        .withMessage("Promo Price must be number"),
+    body("currency")
+        .exists()
+        .withMessage("Currency is required")
+        .notEmpty()
+        .withMessage("Currency cannot be empty"),
+    body("tax_rate")
+        .optional()
+        .isInt()
+        .withMessage("Tax Rate must be number"),
+    body("category_id")
+        .exists()
+        .withMessage("Category ID is required")
+        .notEmpty()
+        .withMessage("Category ID cannot be empty")
+        .isInt()
+        .withMessage("Category ID must be number"),
+    body("sub_category_id")
+        .exists()
+        .withMessage("Sub Category ID is required")
+        .notEmpty()
+        .withMessage("Sub Category cannot be empty")
+        .isInt()
+        .withMessage("Sub Category cannot be empty"),
+    body("store_id")
+        .exists()
+        .withMessage("Store ID is required")
+        .notEmpty()
+        .withMessage("Store ID cannot be empty")
+        .isInt()
+        .withMessage("Store ID must be number"),
+    body("quantity")
+        .exists()
+        .withMessage("Quantity is required")
+        .notEmpty()
+        .withMessage("Quantity cannot be empty")
+        .isInt()
+        .withMessage("Quantity must be number"),
+    body("sizes")
+        .exists()
+        .withMessage("Size are required")
+        .notEmpty()
+        .withMessage("Size cannot be empty")
+        .isArray()
+        .withMessage("Size must be an array"),
+    body("colors")
+        .optional()
+        .isArray()
+        .withMessage("Color must be array"),
+    body()
+        .custom(body => checkAllowedFields(body, ["name", "description", "regular_price", "promo_price", "currency", "tax_rate", "category_id", "sub_category_id", "store_id", "quantity", "sizes", "colors"]))
+]
+
+export const update_product_validator = [
+    param("product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be number"),
+    body("name")
+        .exists()
+        .withMessage("Product Name is required")
+        .notEmpty()
+        .withMessage("Product Name cannot be empty")
+        .customSanitizer(titleCase),
+    body("description")
+        .exists()
+        .withMessage("Product Description is required")
+        .notEmpty()
+        .withMessage("Product Description cannot be empty"),
+    body("regular_price")
+        .exists()
+        .withMessage("Regular Price is required")
+        .notEmpty()
+        .withMessage("Regular Price cannot be empty")
+        .isInt()
+        .withMessage("Regular Price must be number"),
+    body("promo_price")
+        .optional()
+        .isInt()
+        .withMessage("Promo Price must be number"),
+    body("currency")
+        .exists()
+        .withMessage("Currency is required")
+        .notEmpty()
+        .withMessage("Currency cannot be empty"),
+    body("tax_rate")
+        .optional()
+        .isInt()
+        .withMessage("Tax Rate must be number"),
+    body("category_id")
+        .exists()
+        .withMessage("Category ID is required")
+        .notEmpty()
+        .withMessage("Category ID cannot be empty")
+        .isInt()
+        .withMessage("Category ID must be number"),
+    body("sub_category_id")
+        .exists()
+        .withMessage("Sub Category ID is required")
+        .notEmpty()
+        .withMessage("Sub Category cannot be empty")
+        .isInt()
+        .withMessage("Sub Category cannot be empty"),
+    body("quantity")
+        .exists()
+        .withMessage("Quantity is required")
+        .notEmpty()
+        .withMessage("Quantity cannot be empty")
+        .isInt()
+        .withMessage("Quantity must be number"),
+    body("sizes")
+        .exists()
+        .withMessage("Size are required")
+        .notEmpty()
+        .withMessage("Size cannot be empty")
+        .isArray()
+        .withMessage("Size must be an array"),
+    body("colors")
+        .optional()
+        .isArray()
+        .withMessage("Color must be array"),
+    body()
+        .custom(body => checkAllowedFields(body, ["name", "description", "regular_price", "promo_price", "currency", "tax_rate", "category_id", "sub_category_id", "store_id", "quantity", "sizes", "colors"]))
+]
+
+export const delete_product_validator = [
+    param("product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be number"),
+    body("store_id")
+        .exists()
+        .withMessage("Store ID is required")
+        .notEmpty()
+        .withMessage("Store Id cannot be empty")
+        .isInt()
+        .withMessage("Store ID must be number"),
+    body()
+        .custom(body => checkAllowedFields(body, ["store_id"]))
+]
+
+export const get_store_product = [
+    param("store_id")
+        .exists()
+        .withMessage("Store ID is required")
+        .notEmpty()
+        .withMessage("Store Id cannot be empty")
+        .isInt()
+        .withMessage("Store ID must be number"),
+]
+
+export const get_products_validator = [
+    query("page")
+        .optional()
+        .isInt()
+        .withMessage("Page must be number"),
+    query("page_size")
+        .optional()
+        .isInt()
+        .withMessage("Page Size must be number")
+];
+
+export const add_to_wishlist_validator = [
+    body("product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be number"),
+    body()
+        .custom(body => checkAllowedFields(body, ['product_id']))
+];
+
+export const remove_from_wishlist_validator = [
+    param("wishlist_item_id")
+        .exists()
+        .withMessage("Wishlist Item ID is required")
+        .notEmpty()
+        .withMessage("Wishlist Item ID cannot be empty")
+        .isInt()
+        .withMessage("Wishlist Item ID must be number"),
+    body("wishlist_id")
+        .exists()
+        .withMessage("Wishlist ID is required")
+        .notEmpty()
+        .withMessage("Wishlist ID cannot be empty")
+        .isInt()
+        .withMessage("Wishlist ID must be number"),
+    body()
+        .custom(body => checkAllowedFields(body, ["wishlist_id"]))
+];

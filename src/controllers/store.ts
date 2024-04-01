@@ -2,14 +2,16 @@ import { Request, Response } from "express"
 import { errorHandler } from "../helpers/errorHandler"
 import { responseHandler } from "../helpers/responseHandler";
 import Model from "../server/models";
+import { urlGenerator } from "../utils/urlGenerator";
+import { generateFiveDigitNumbers } from "../helpers/generateFiveDigitNumbers";
 
 const Op = Model.Sequelize.Op;
 
 export const createStore = async (req: Request, res: Response) => {
     try {
         const { name, desc, address, phone, alt_phone, email, state, city, logo } = req.body;
-        const slug = name.replace(/\s+/g, '-').replace(/:/g, "-").replace("/", "-").toLowerCase();
-        const store_code = Math.floor(27821 + Math.random() * 28827);
+        const slug = urlGenerator(name);
+        const store_code = generateFiveDigitNumbers();
         const store = await Model.Store.create({
             vendor_id:  req.vendor.id,
             store_code,
@@ -73,7 +75,7 @@ export const updateStore = async (req: Request, res: Response) => {
         const updated_store = await Model.Store.update({
             name,
              desc, 
-             slug: store.slug === slug ? slug : slug.replace(/\s+/g, '-').replace(/:/g, "-").replace("/", "-").toLowerCase(),
+             slug: store.slug === slug ? slug : urlGenerator(slug),
              address, 
              phone, 
              alt_phone, 
