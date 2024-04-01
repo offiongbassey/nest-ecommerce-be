@@ -711,3 +711,34 @@ export const remove_from_wishlist_validator = [
     body()
         .custom(body => checkAllowedFields(body, ["wishlist_id"]))
 ];
+
+export const add_to_cart_validator = [
+    body("product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be number"),
+    body()
+        .custom(body => checkAllowedFields(body, ['product_id']))
+]
+
+export const remove_cart_item = [
+    param("product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be number"),
+    body("cart_id")
+        .exists()
+        .withMessage("Cart ID is required")
+        .notEmpty()
+        .withMessage("Cart ID cannot be empty")
+        .isInt()
+        .withMessage("Cart ID must be number"),
+    body()
+        .custom(body => checkAllowedFields(body, ["cart_id"]))
+]
