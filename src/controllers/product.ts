@@ -12,6 +12,7 @@ import {
 } from "../services/product";
 import { generateFiveDigitNumbers } from "../helpers/generateFiveDigitNumbers";
 import { urlGenerator } from "../utils/urlGenerator";
+import { deleteUploadedImage, getUploadedImage, uploadProductImages } from "../services/fileUploadService";
 
 const Op = Model.Sequelize.Op;
 
@@ -72,6 +73,7 @@ export const createProduct = async (req: Request, res: Response) => {
       sizes,
       colors,
     } = req.body;
+
     const product_code = `APR-${generateFiveDigitNumbers()}`;
 
     const product = await Model.Product.create({
@@ -94,6 +96,7 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     //create product images
+    await uploadProductImages(req.files, product.id);
 
     //create product color
     if (colors && colors.length > 0) {
@@ -223,3 +226,13 @@ export const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
+export const getProductImage = async (req: Request, res: Response) => {
+  try {
+      const { file_name } = req.params;
+
+      await getUploadedImage(res, file_name, 'product');
+  } catch (error) {
+      await errorHandler(error);
+      return responseHandler(res, 500, false, "Something went wrong, try again later");
+  }
+}

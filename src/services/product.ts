@@ -84,3 +84,4 @@ export const updateProductInventory = async (product_id: number, quantity: numbe
         console.error("Error updating product inventory: ", error);
     }
 }
+

@@ -336,11 +336,11 @@ export const delete_category_validator = [
 export const create_sub_category_validator = [
     body("category_id")
         .exists()
-        .withMessage("Sub Category ID is required")
+        .withMessage("Category ID is required")
         .notEmpty()
-        .withMessage("Sub Category ID cannot be empty")
+        .withMessage("Category ID cannot be empty")
         .isInt()
-        .withMessage("Sub Category ID must be number"),
+        .withMessage("Category ID must be number"),
     body("name")
         .exists()
         .withMessage("Sub Category Name is required")
@@ -552,6 +552,7 @@ export const create_product_validator = [
         .isInt()
         .withMessage("Quantity must be number"),
     body("sizes")
+        .optional()
         .exists()
         .withMessage("Size are required")
         .notEmpty()
