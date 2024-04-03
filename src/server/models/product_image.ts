@@ -7,6 +7,7 @@ type ProductImageAttributes = {
   product_id: number;
   image_url: string;
   status: string;
+  image: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -21,6 +22,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     product_id!: number;
     image_url!: string;
     status!: string;
+    image!: string;
     static associate(models: any) {
       // define association here
     }
@@ -37,7 +39,12 @@ module.exports = (sequelize: any, DataTypes: any) => {
     status: {
       type: DataTypes.ENUM("active", "blocked", "deleted"),
       defaultValue: "active"
+    },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: ""
     }
+
   }, {
     sequelize,
     modelName: 'Product_Image',

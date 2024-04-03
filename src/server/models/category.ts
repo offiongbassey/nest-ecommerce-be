@@ -6,7 +6,10 @@ import {
 type CategoryAttributes = {
   name: string,
   status: string,
-  slug: string
+  slug: string,
+  image: string,
+  image_url: string,
+
 }
 
 module.exports = (sequelize: any, DataTypes: any)  => {
@@ -21,6 +24,8 @@ module.exports = (sequelize: any, DataTypes: any)  => {
     name!:string;
     status!: string;
     slug!: string;
+    image!: string;
+    image_url!: string;
     
     static associate(models: any) {
       // define association here
@@ -38,7 +43,16 @@ module.exports = (sequelize: any, DataTypes: any)  => {
     slug: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: ""
+    },
+    image_url: {
+      type: DataTypes.STRING,
+      defaultValue: ""
     }
+
   }, {
     sequelize,
     modelName: 'Category',
