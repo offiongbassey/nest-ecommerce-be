@@ -28,7 +28,7 @@ app.use("*", (req, res) => {
     return responseHandler(res, 500, false, "Invalid Route");
 });
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.log(`App is running on port ${ port }`);
