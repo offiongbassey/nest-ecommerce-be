@@ -1,0 +1,26 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const auth_1 = __importDefault(require("./auth"));
+const store_1 = __importDefault(require("./store"));
+const category_1 = __importDefault(require("./category"));
+const subCategory_1 = __importDefault(require("./subCategory"));
+const size_1 = __importDefault(require("./size"));
+const color_1 = __importDefault(require("./color"));
+const product_1 = __importDefault(require("./product"));
+const wishlist_1 = __importDefault(require("./wishlist"));
+const cart_1 = __importDefault(require("./cart"));
+const router = express_1.default.Router();
+router.use('/auth', auth_1.default);
+router.use('/store', store_1.default);
+router.use('/category', category_1.default);
+router.use('/sub-category', subCategory_1.default);
+router.use('/size', size_1.default);
+router.use('/color', color_1.default);
+router.use('/product', product_1.default);
+router.use('/wishlist', wishlist_1.default);
+router.use('/cart', cart_1.default);
+exports.default = router;
