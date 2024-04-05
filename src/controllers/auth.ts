@@ -5,6 +5,7 @@ import { loginService, logoutService, signupService } from "../services/authServ
 
 export const vendorSignup = async (req: Request, res: Response) => {
     try {
+        
         const vendor = await signupService(req, res, 'Vendor');
         return responseHandler(res, 201, true, "Account Successfully Created", vendor);
     } catch (error) {
