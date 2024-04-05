@@ -1,0 +1,16 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const validation_1 = require("../helpers/validation");
+const validator_1 = require("../middlewares/validator");
+const cart_1 = require("../controllers/cart");
+const auth_1 = require("../middlewares/auth");
+const router = express_1.default.Router();
+router.post('/', auth_1.customerAuth, (0, validation_1.validationHandler)(validator_1.add_to_cart_validator), cart_1.addToCart);
+router.get('/', auth_1.customerAuth, cart_1.getCart);
+router.patch('/:product_id', auth_1.customerAuth, (0, validation_1.validationHandler)(validator_1.remove_cart_item), cart_1.removeCartItem);
+router.delete('/:product_id', auth_1.customerAuth, (0, validation_1.validationHandler)(validator_1.remove_cart_item), cart_1.deleteCartItem);
+exports.default = router;
