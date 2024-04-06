@@ -21,6 +21,7 @@ const fileUploadService_1 = require("../services/fileUploadService");
 const fileType_1 = require("../utils/fileType");
 const Op = models_1.default.Sequelize.Op;
 const CATEGORY_URL = `${process.env.SERVER_URL}/api/v1/category/image/`;
+const { CATEGORY_BLOB_CONTAINER } = process.env;
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.file) {
@@ -35,7 +36,7 @@ const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!(0, fileType_1.acceptedFileType)(mimetype)) {
             return (0, responseHandler_1.responseHandler)(res, 401, false, `Unaccepted File Type: ${mimetype.split('/')[1]}`);
         }
-        const file_name = yield (0, fileUploadService_1.fileUploadService)(originalname, size, buffer, 'category');
+        const file_name = yield (0, fileUploadService_1.fileUploadService)(originalname, size, buffer, `${CATEGORY_BLOB_CONTAINER}`);
         const category = yield models_1.default.Category.create({
             name: req.body.name,
             slug: (0, urlGenerator_1.urlGenerator)(req.body.name),
@@ -88,7 +89,7 @@ const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         //delete category image from server
         const file_name = category.image;
-        yield (0, fileUploadService_1.deleteUploadedImage)(file_name, 'category');
+        yield (0, fileUploadService_1.deleteUploadedImage)(file_name, `${CATEGORY_BLOB_CONTAINER}`);
         yield models_1.default.Category.update({
             status: "deleted"
         }, { where: { id: category.id } });
@@ -103,7 +104,7 @@ exports.deleteCategory = deleteCategory;
 const getCategoryImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { file_name } = req.params;
-        yield (0, fileUploadService_1.getUploadedImage)(res, file_name, 'category');
+        yield (0, fileUploadService_1.getUploadedImage)(res, file_name, `${CATEGORY_BLOB_CONTAINER}`);
     }
     catch (error) {
         yield (0, errorHandler_1.errorHandler)(error);

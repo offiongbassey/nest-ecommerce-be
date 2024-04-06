@@ -198,7 +198,7 @@ exports.deleteProduct = deleteProduct;
 const getProductImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { file_name } = req.params;
-        yield (0, fileUploadService_1.getUploadedImage)(res, file_name, 'product');
+        yield (0, fileUploadService_1.getUploadedImage)(res, file_name, `${process.env.PRODUCT_BLOB_CONTAINER}`);
     }
     catch (error) {
         yield (0, errorHandler_1.errorHandler)(error);

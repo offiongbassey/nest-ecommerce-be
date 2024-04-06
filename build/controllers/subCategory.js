@@ -21,6 +21,7 @@ const fileType_1 = require("../utils/fileType");
 const fileUploadService_1 = require("../services/fileUploadService");
 const Op = models_1.default.Sequelize.Op;
 const SUB_CATEGORY_URL = `${process.env.SERVER_URL}/api/v1/sub-category/image/`;
+const { CATEGORY_BLOB_CONTAINER } = process.env;
 const createSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { category_id, name } = req.body;
@@ -33,7 +34,7 @@ const createSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (!(0, fileType_1.acceptedFileType)(mimetype)) {
             return (0, responseHandler_1.responseHandler)(res, 401, false, `Unaccepted File Type: ${mimetype.split('/')[1]}`);
         }
-        const file_name = yield (0, fileUploadService_1.fileUploadService)(originalname, size, buffer, 'category');
+        const file_name = yield (0, fileUploadService_1.fileUploadService)(originalname, size, buffer, `${CATEGORY_BLOB_CONTAINER}`);
         const sub_category = yield models_1.default.SubCategory.create({
             category_id,
             name,
@@ -106,7 +107,7 @@ const deleteSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, functi
             return (0, responseHandler_1.responseHandler)(res, 404, false, "Sub Category Not Found");
         }
         const { image } = sub_category;
-        yield (0, fileUploadService_1.deleteUploadedImage)(image, 'category');
+        yield (0, fileUploadService_1.deleteUploadedImage)(image, `${CATEGORY_BLOB_CONTAINER}`);
         yield models_1.default.SubCategory.update({ status: "deleted" }, { where: { id } });
         return (0, responseHandler_1.responseHandler)(res, 200, true, "Sub Category Deleted Successfully");
     }
@@ -119,7 +120,7 @@ exports.deleteSubCategory = deleteSubCategory;
 const getSubCategoryImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { file_name } = req.params;
-        yield (0, fileUploadService_1.getUploadedImage)(res, file_name, 'category');
+        yield (0, fileUploadService_1.getUploadedImage)(res, file_name, `${CATEGORY_BLOB_CONTAINER}`);
     }
     catch (error) {
         yield (0, errorHandler_1.errorHandler)(error);
