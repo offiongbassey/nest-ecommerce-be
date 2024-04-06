@@ -42,7 +42,11 @@ export const loginService = async (req: Request, res: Response, property: string
 export const logoutService = async (req: Request, res: Response, property: string) => {
         const token = `${req.headers.token}`;
         const verification = jwtVerification(token) as any;
+        if(!verification.id){
+            return responseHandler(res, 401, false, "Invalid Token");
+        }
         const redis_token = await client.get(`${property}_${verification.id.toString()}`);
+
         if(redis_token){
             await client.DEL(`${property}_${verification.id.toString()}`);
         }
