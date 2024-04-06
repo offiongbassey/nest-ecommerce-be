@@ -13,6 +13,9 @@ interface MulterRequest extends Request {
 const Op = Model.Sequelize.Op;
 
 const CATEGORY_URL = `${process.env.SERVER_URL}/api/v1/category/image/`;
+const { CATEGORY_BLOB_CONTAINER } = process.env;
+
+
 
 export const createCategory = async (req: Request, res: Response) => {
     try {
@@ -32,7 +35,7 @@ export const createCategory = async (req: Request, res: Response) => {
             return responseHandler(res, 401, false, `Unaccepted File Type: ${mimetype.split('/')[1]}`)
         }
         
-        const file_name = await fileUploadService(originalname, size, buffer, 'category');
+        const file_name = await fileUploadService(originalname, size, buffer, `${CATEGORY_BLOB_CONTAINER}`);
 
         const category = await Model.Category.create({
             name: req.body.name,
@@ -87,7 +90,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
         } 
         //delete category image from server
         const file_name = category.image;
-        await deleteUploadedImage(file_name, 'category');
+        await deleteUploadedImage(file_name, `${CATEGORY_BLOB_CONTAINER}`);
 
         await Model.Category.update({
             status: "deleted"
@@ -104,7 +107,7 @@ export const getCategoryImage = async (req: Request, res: Response) => {
     try {
         const { file_name } = req.params;
 
-        await getUploadedImage(res, file_name, 'category');
+        await getUploadedImage(res, file_name, `${CATEGORY_BLOB_CONTAINER}`);
         
     } catch (error) {
         await errorHandler(error);

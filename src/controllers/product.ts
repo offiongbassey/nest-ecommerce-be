@@ -230,7 +230,7 @@ export const getProductImage = async (req: Request, res: Response) => {
   try {
       const { file_name } = req.params;
 
-      await getUploadedImage(res, file_name, 'product');
+      await getUploadedImage(res, file_name, `${process.env.PRODUCT_BLOB_CONTAINER}`);
   } catch (error) {
       await errorHandler(error);
       return responseHandler(res, 500, false, "Something went wrong, try again later");
