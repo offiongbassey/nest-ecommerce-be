@@ -43,7 +43,7 @@ export const fileUploadService = async (originalname: string, size: number, buff
 }
 
 export const uploadProductImages = async (files: any, product_id: number) => {
-    const containerClient = blobService.getContainerClient('product');
+    const containerClient = blobService.getContainerClient(`${process.env.PRODUCT_BLOB_CONTAINER}`);
 
     for(const file of files){
     const { originalname, size, buffer } = file;

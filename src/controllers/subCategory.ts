@@ -12,6 +12,7 @@ interface MulterRequest extends Request {
 }
 
 const SUB_CATEGORY_URL = `${process.env.SERVER_URL}/api/v1/sub-category/image/`;
+const { CATEGORY_BLOB_CONTAINER }  = process.env;
 
 export const createSubCategory = async (req: Request, res: Response) => {
     try {
@@ -27,7 +28,7 @@ export const createSubCategory = async (req: Request, res: Response) => {
             return responseHandler(res, 401, false, `Unaccepted File Type: ${mimetype.split('/')[1]}`);
         }
 
-        const file_name = await fileUploadService(originalname, size, buffer, 'category');
+        const file_name = await fileUploadService(originalname, size, buffer, `${CATEGORY_BLOB_CONTAINER}`);
 
         const sub_category = await Model.SubCategory.create({
             category_id,
@@ -104,7 +105,7 @@ export const deleteSubCategory = async (req: Request, res: Response) => {
         }
 
         const { image } = sub_category;
-        await deleteUploadedImage(image, 'category');
+        await deleteUploadedImage(image, `${CATEGORY_BLOB_CONTAINER}`);
          
         await Model.SubCategory.update({ status: "deleted" }, { where: { id }});
 
@@ -119,7 +120,7 @@ export const getSubCategoryImage = async (req: Request, res: Response) => {
     try {
         const { file_name } = req.params;
 
-        await getUploadedImage(res, file_name, 'category');
+        await getUploadedImage(res, file_name, `${CATEGORY_BLOB_CONTAINER}`);
         
     } catch (error) {
         await errorHandler(error);

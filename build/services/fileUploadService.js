@@ -53,7 +53,7 @@ const fileUploadService = (originalname, size, buffer, container) => __awaiter(v
 });
 exports.fileUploadService = fileUploadService;
 const uploadProductImages = (files, product_id) => __awaiter(void 0, void 0, void 0, function* () {
-    const containerClient = blobService.getContainerClient('product');
+    const containerClient = blobService.getContainerClient(`${process.env.PRODUCT_BLOB_CONTAINER}`);
     for (const file of files) {
         const { originalname, size, buffer } = file;
         //filename refining
