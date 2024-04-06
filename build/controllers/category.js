@@ -57,7 +57,7 @@ const getAllCategories = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
     catch (error) {
         yield (0, errorHandler_1.errorHandler)(error);
-        return (0, responseHandler_1.responseHandler)(res, 500, false, "Somethng went wrong, try again later");
+        return (0, responseHandler_1.responseHandler)(res, 500, false, "Somethng went wrong, try again later", { error });
     }
 });
 exports.getAllCategories = getAllCategories;
