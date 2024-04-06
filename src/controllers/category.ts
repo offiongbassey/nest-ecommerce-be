@@ -55,7 +55,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
         return responseHandler(res, 200, true, "Data Retrieved", categories);
     } catch (error) {
         await errorHandler(error);
-        return responseHandler(res, 500, false, "Somethng went wrong, try again later");
+        return responseHandler(res, 500, false, "Somethng went wrong, try again later", { error });
     }
 }
 
