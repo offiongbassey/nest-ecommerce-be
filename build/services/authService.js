@@ -54,6 +54,9 @@ exports.loginService = loginService;
 const logoutService = (req, res, property) => __awaiter(void 0, void 0, void 0, function* () {
     const token = `${req.headers.token}`;
     const verification = (0, jwtVerification_1.jwtVerification)(token);
+    if (!verification.id) {
+        return (0, responseHandler_1.responseHandler)(res, 401, false, "Invalid Token");
+    }
     const redis_token = yield redis_1.client.get(`${property}_${verification.id.toString()}`);
     if (redis_token) {
         yield redis_1.client.DEL(`${property}_${verification.id.toString()}`);
