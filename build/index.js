@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use((0, helmet_1.default)());
 app.use('/api/v1/', routes_1.default);
 app.get("/", (req, res) => {
-    return (0, responseHandler_1.responseHandler)(res, 200, true, `Welcome to Nest Api ${process.env.NODE_ENV}`);
+    return (0, responseHandler_1.responseHandler)(res, 200, true, `Welcome to Nest Api`);
 });
 app.use("*", (req, res) => {
     return (0, responseHandler_1.responseHandler)(res, 500, false, "Invalid Route");
