@@ -39,7 +39,7 @@ export const validationHandler = (values: any[] = []) => {
         _errors.forEach((v) => {
             message += `${ v.msg },`;
         });
-        responseHandler(res, 422, false, { errors: errors.array() })
+        return responseHandler(res, 422, false, errors.array());
     }
 }
 
