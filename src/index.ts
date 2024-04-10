@@ -21,7 +21,7 @@ app.use(helmet());
 app.use('/api/v1/', router);
 
 app.get("/", (req, res) => {
-    return responseHandler(res, 200, true, `Welcome to Nest Api ${process.env.NODE_ENV}`);
+    return responseHandler(res, 200, true, `Welcome to Nest Api`);
 });
 
 app.use("*", (req, res) => {
