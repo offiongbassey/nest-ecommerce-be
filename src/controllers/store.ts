@@ -10,9 +10,18 @@ const Op = Model.Sequelize.Op;
 export const createStore = async (req: Request, res: Response) => {
     try {
         const { name, desc, address, phone, alt_phone, email, state, city, logo } = req.body;
+
+        // //check if user has store already
+        // const store = await Model.Store.findOne({ where: { vendor_id: req.vendor.id, status: "active" }});
+        // if(store){
+        //     return responseHandler(res, 400, false, "You already have an active store");
+        // }
+
         const slug = urlGenerator(name);
         const store_code = generateFiveDigitNumbers();
-        const store = await Model.Store.create({
+
+
+        const new_store = await Model.Store.create({
             vendor_id:  req.vendor.id,
             store_code,
             name,
@@ -27,7 +36,10 @@ export const createStore = async (req: Request, res: Response) => {
             logo
         });
 
-        return responseHandler(res, 201, true, "Store Created Successfully", store);
+        //update vendor to is_verified true
+        await Model.Vendor.update({ is_verified: true }, { where: { id: req.vendor.id }});
+
+        return responseHandler(res, 201, true, "Store Created Successfully", new_store);
     } catch (error) {
         await errorHandler(error);
         return responseHandler(res, 500, false, "Something went wrong, try again later.");

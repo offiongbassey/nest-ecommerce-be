@@ -10,15 +10,20 @@ export const signupService = async (req: Request, res: Response, property: strin
     const salt = await bcrypt.genSalt(10);
     const hashed_password = await bcrypt.hash(password, salt);
 
-    const register = await Model[property].create({
+    const user = await Model[property].create({
         first_name,
         last_name,
         email,
         password: hashed_password,
         phone
     });
-    register.password = undefined;
-    return register;
+    user.password = undefined;
+    //generate token
+    const token = generateToken(user.id);
+    await client.setEx(`${property}_${user.id.toString()}`, 60000, token);
+    const {id, photo, status, is_verified } = user;
+    const user_data = { id, email, first_name, last_name, phone, photo, status, is_verified, token };
+    return user_data;
 }
 
 export const loginService = async (req: Request, res: Response, property: string) => {
