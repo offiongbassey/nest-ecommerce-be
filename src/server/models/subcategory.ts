@@ -29,6 +29,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
     image_url!: string;
     static associate(models: any) {
       // define association here
+      SubCategory.hasMany(models.Product, {
+        foreignKey: "sub_category_id",
+        as: "sub_category"
+      })
     }
   }
   SubCategory.init({

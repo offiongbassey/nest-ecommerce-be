@@ -19,6 +19,8 @@ type ProductAttributes = {
   views: number;
   best_seller: number;
   orders: number;
+  quantity: number;
+  quantity_sold: number;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -40,16 +42,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
     views!: number;
     best_seller!: number;
     orders!: number;
+    quantity!: number;
+    quantity_sold!: number;
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models: any) {
-      Product.hasOne(models.Product_Inventory, {
-        foreignKey: "product_id",
-        as: 'product_inventory'
-      });
       Product.hasMany(models.Product_Size, {
         foreignKey: "product_id",
         as: "product_sizes"
@@ -58,10 +58,22 @@ module.exports = (sequelize: any, DataTypes: any) => {
         foreignKey: "product_id",
         as: "product_colors"
       });
+      Product.hasMany(models.Product_Image, {
+        foreignKey: "product_id",
+        as: "product_images"
+      })
       Product.belongsTo(models.Store, {
         foreignKey: "store_id",
         as: "store"
       });
+      Product.belongsTo(models.Category, {
+        foreignKey: "category_id",
+        as: "category"
+      })
+      Product.belongsTo(models.SubCategory, {
+        foreignKey: "sub_category_id",
+        as: "sub_category"
+      })
       Product.hasMany(models.Wishlist_Item, {
         foreignKey: "product_id",
         as: "wishlist-product"
@@ -136,6 +148,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    quantity: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    quantity_sold: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     sequelize,
     modelName: 'Product',

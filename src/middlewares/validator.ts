@@ -537,13 +537,6 @@ export const create_product_validator = [
         .withMessage("Sub Category cannot be empty")
         .isInt()
         .withMessage("Sub Category cannot be empty"),
-    body("store_id")
-        .exists()
-        .withMessage("Store ID is required")
-        .notEmpty()
-        .withMessage("Store ID cannot be empty")
-        .isInt()
-        .withMessage("Store ID must be number"),
     body("quantity")
         .exists()
         .withMessage("Quantity is required")
@@ -552,19 +545,11 @@ export const create_product_validator = [
         .isInt()
         .withMessage("Quantity must be number"),
     body("sizes")
-        .optional()
-        .exists()
-        .withMessage("Size are required")
-        .notEmpty()
-        .withMessage("Size cannot be empty")
-        .isArray()
-        .withMessage("Size must be an array"),
+        .optional(),
     body("colors")
-        .optional()
-        .isArray()
-        .withMessage("Color must be array"),
+        .optional(),
     body()
-        .custom(body => checkAllowedFields(body, ["name", "description", "regular_price", "promo_price", "currency", "tax_rate", "category_id", "sub_category_id", "store_id", "quantity", "sizes", "colors"]))
+        .custom(body => checkAllowedFields(body, ["name", "description", "regular_price", "promo_price", "currency", "tax_rate", "category_id", "sub_category_id", "quantity", "sizes", "colors"]))
 ]
 
 export const update_product_validator = [
@@ -628,16 +613,9 @@ export const update_product_validator = [
         .isInt()
         .withMessage("Quantity must be number"),
     body("sizes")
-        .exists()
-        .withMessage("Size are required")
-        .notEmpty()
-        .withMessage("Size cannot be empty")
-        .isArray()
-        .withMessage("Size must be an array"),
+        .optional(),
     body("colors")
-        .optional()
-        .isArray()
-        .withMessage("Color must be array"),
+        .optional(),
     body()
         .custom(body => checkAllowedFields(body, ["name", "description", "regular_price", "promo_price", "currency", "tax_rate", "category_id", "sub_category_id", "store_id", "quantity", "sizes", "colors"]))
 ]
@@ -742,4 +720,24 @@ export const remove_cart_item = [
         .withMessage("Cart ID must be number"),
     body()
         .custom(body => checkAllowedFields(body, ["cart_id"]))
+]
+
+export const get_products_by_sub_category_validator = [
+    param("sub_category_id")
+        .exists()
+        .withMessage("Sub Category ID is required")
+        .notEmpty()
+        .withMessage("Sub Category ID cannot be empty")
+        .isInt()
+        .withMessage("Sub Category ID must be a number")
+]
+
+export const get_product_by_slug_validator = [
+    param("slug")
+        .exists()
+        .withMessage("Slug URL is required")
+        .notEmpty()
+        .withMessage("Slug URL cannot be empty")
+        .isLength({ min: 2})
+        .withMessage("Slug URL must be at least 2 characters")
 ]

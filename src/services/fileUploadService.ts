@@ -4,6 +4,7 @@ import { urlGenerator } from "../utils/urlGenerator";
 import { BlobServiceClient } from "@azure/storage-blob";
 import { Response } from "express";
 import Model from "../server/models";
+import { acceptedFileType } from "../utils/fileType";
 
 const blobService = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING as string);
 
@@ -45,8 +46,12 @@ export const fileUploadService = async (originalname: string, size: number, buff
 export const uploadProductImages = async (files: any, product_id: number) => {
     const containerClient = blobService.getContainerClient(`${process.env.PRODUCT_BLOB_CONTAINER}`);
 
+    console.log("running ---------------------------")
     for(const file of files){
-    const { originalname, size, buffer } = file;
+    const { originalname, size, buffer, mimetype } = file;
+    if(acceptedFileType(mimetype)){
+
+    
     //filename refining
     const random = crypto.randomBytes(10).toString("hex");
     const extension = originalname.split(".").pop();
@@ -67,6 +72,8 @@ export const uploadProductImages = async (files: any, product_id: number) => {
         image: file_name
     });
     }
+    }
+    return true;
 }
 
 export const getUploadedImage = async (res: Response, file_name: string, container: string) => {

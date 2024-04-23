@@ -25,7 +25,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       // define association here
       Product_Color.belongsTo(models.Product, {
         foreignKey: "product_id",
-        as: "product_colosr"
+        as: "product_colors"
       });
       Product_Color.belongsTo(models.Color, {
         foreignKey: "color_id",

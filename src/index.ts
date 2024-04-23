@@ -9,14 +9,23 @@ import { responseHandler } from "./helpers/responseHandler";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    credentials: true
+}));
+
+app.use(
+    helmet({
+      crossOriginResourcePolicy: false,
+    })
+  );
 app.use(express.json());
 
 if(process.env.NODE_ENV !== "production"){
     app.use(morgan("dev"));
 }
 
-app.use(helmet());
+// app.use(helmet());
 
 app.use('/api/v1/', router);
 

@@ -27,16 +27,6 @@ export const createProductColors = async (product_id: number, colors: number[]) 
     }
 }
 
-export const createProductInventory = async (product_id: number, quantity: number) => {
-    try {
-        await Model.Product_Inventory.create({ product_id, quantity});
-
-        console.log("Product Inventory Created Successfully");
-    } catch (error) {
-        console.error("Error creating product inventory: ", error);
-    }
-}
-
 export const updateProductSizes = async (product_id: number, sizes: number[]) => {
     try {
         //check if the product already has the sizes
@@ -77,11 +67,4 @@ export const updateProductColors = async (product_id: number, colors: number[]) 
     }
 }
 
-export const updateProductInventory = async (product_id: number, quantity: number) => {
-    try {
-        await Model.Product_Inventory.update({quantity}, { where: { product_id }});
-    } catch (error) {
-        console.error("Error updating product inventory: ", error);
-    }
-}
 
