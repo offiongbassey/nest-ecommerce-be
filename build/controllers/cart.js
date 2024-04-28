@@ -73,7 +73,7 @@ const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             include: [
                 {
                     model: models_1.default.Product,
-                    as: "cart-product",
+                    as: "cart_product",
                     attributes: [
                         "id",
                         "name",

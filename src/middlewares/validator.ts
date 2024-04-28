@@ -699,8 +699,15 @@ export const add_to_cart_validator = [
         .withMessage("Product ID cannot be empty")
         .isInt()
         .withMessage("Product ID must be number"),
+    body("quantity")
+        .exists()
+        .withMessage("Quantity is required")
+        .notEmpty()
+        .withMessage("Quantity cannot be empty")
+        .isInt()
+        .withMessage("Quantity must be a number"),
     body()
-        .custom(body => checkAllowedFields(body, ['product_id']))
+        .custom(body => checkAllowedFields(body, ['product_id', 'quantity']))
 ]
 
 export const remove_cart_item = [
@@ -710,16 +717,7 @@ export const remove_cart_item = [
         .notEmpty()
         .withMessage("Product ID cannot be empty")
         .isInt()
-        .withMessage("Product ID must be number"),
-    body("cart_id")
-        .exists()
-        .withMessage("Cart ID is required")
-        .notEmpty()
-        .withMessage("Cart ID cannot be empty")
-        .isInt()
-        .withMessage("Cart ID must be number"),
-    body()
-        .custom(body => checkAllowedFields(body, ["cart_id"]))
+        .withMessage("Product ID must be number")
 ]
 
 export const get_products_by_sub_category_validator = [
@@ -740,4 +738,28 @@ export const get_product_by_slug_validator = [
         .withMessage("Slug URL cannot be empty")
         .isLength({ min: 2})
         .withMessage("Slug URL must be at least 2 characters")
+]
+
+export const add_to_cart_from_login_validator = [
+    body("cart")
+        .exists()
+        .withMessage("Cart is required")
+        .isArray()
+        .withMessage("Cart cannot be empty and must be an array"),
+    body("cart.*.product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be a number"),
+    body("cart.*.quantity")
+        .exists()
+        .withMessage("Quantity is required")
+        .notEmpty()
+        .withMessage("Quantity cannot be empty")
+        .isInt()
+        .withMessage("Quantity must be a number"),
+    body()
+        .custom(body => checkAllowedFields(body, ["cart"]))
 ]

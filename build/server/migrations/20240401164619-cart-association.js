@@ -33,7 +33,7 @@ module.exports = {
             yield queryInterface.addConstraint("Cart_Items", {
                 fields: ["product_id"],
                 type: "foreign key",
-                name: "cart-product-association",
+                name: "cart_product-association",
                 references: {
                     table: "Products",
                     field: "id"
